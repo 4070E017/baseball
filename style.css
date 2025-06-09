@@ -245,7 +245,6 @@ main {
     height: 350px;
   }
 }
-/* 預設 bar 顏色（根據主題用 var 控制） */
 .bar {
   fill: var(--accent);
   opacity: 0.85;
@@ -253,13 +252,11 @@ main {
   transition: fill 0.2s, opacity 0.2s;
 }
 
-/* 日間模式 hover → 深藍色（#005fa3） */
 body.light .bar:hover {
   fill: #005fa3;
   opacity: 1;
 }
 
-/* 夜間模式 hover → 亮藍色（#66e0ff 或白色） */
 body.dark .bar:hover {
   fill: #ffffff;
   opacity: 1;
