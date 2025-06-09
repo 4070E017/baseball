@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MLB 數據排行</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body class="dark">
+  <header>
+    <h1>MLB 數據排行</h1>
+    <div id="controls" class="glass">
+      <button id="theme-toggle" title="切換主題">🌗</button>
+
+      <label>模式：
+        <select id="view-mode">
+          <option value="team">球隊排行</option>
+          <option value="league">聯盟排行</option>
+        </select>
+      </label>
+
+      <label>賽季：
+        <select id="season-select"></select>
+      </label>
+
+      <label>球隊：
+        <select id="team-select"></select>
+      </label>
+
+      <label>類型：
+        <select id="player-type-select">
+          <option value="hitter">打者</option>
+          <option value="pitcher-starter">投手-先發</option>
+          <option value="pitcher-relief">投手-後援</option>
+        </select>
+      </label>
+
+      <label>指標：
+        <select id="metric-select"></select>
+      </label>
+
+      <input type="text" id="player-search" placeholder="搜尋球員…" />
+      <button id="reset-button" title="重設所有選項">🔁 重設</button>
+    </div>
+  </header>
+
+  <main>
+    <svg id="chart"></svg>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content glass">
+      <span class="close">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
