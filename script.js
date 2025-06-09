@@ -1,4 +1,3 @@
-// API
 const STATS_API = ({ season, group, pool, limit }) =>
   `https://statsapi.mlb.com/api/v1/stats?stats=season&season=${season}` +
   `&group=${group}&sportId=1&playerPool=${pool}&limit=${limit}`;
@@ -6,7 +5,6 @@ const ROSTER_API = (teamId, season) =>
   `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=all&season=${season}`;
 const TEAMS_API = 'https://statsapi.mlb.com/api/v1/teams?sportId=1';
 
-// DOM & D3
 const svg = d3.select('#chart');
 const margin = { top: 40, right: 20, bottom: 100, left: 60 };
 const chartG = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
@@ -55,7 +53,6 @@ function init() {
       draw();
     });
 
-  // 初始主題（根據 localStorage）
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
     document.body.classList.add('dark');
@@ -72,7 +69,6 @@ function init() {
 metricSel.addEventListener('change', () => draw());
 searchInput.addEventListener('input', () => draw(filtered()));
 
-// 切換主題邏輯
 themeToggle.addEventListener('click', () => {
   const isDark = document.body.classList.contains('dark');
   document.body.classList.toggle('dark', !isDark);
