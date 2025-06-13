@@ -109,7 +109,7 @@ async function loadPlayers() {
           const splits  = statRes.data.stats?.[0]?.splits;
           const stats   = splits?.length ? splits[0].stat : null;
           if (stats) classification = stats.gamesStarted > 0 ? '先發投手' : '後援投手';
-        } catch { /* ignore */ }
+        } catch {  }
       }
 
       const card = document.createElement('div');
@@ -138,7 +138,7 @@ async function loadPlayers() {
       img.alt = p.person.fullName;
       img.onerror = function() {
         this.onerror = null;
-        this.src = 'images/placeholder.png';
+        this.src = 'placeholder.png';
       };
       img.src = `https://midfield.mlbstatic.com/v1/people/${id}/headshot/67/current`;
 
