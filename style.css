@@ -62,7 +62,6 @@
       border-radius: 50%;
       margin-bottom: 0.5rem;
     }
-    /* Hover 效果：往上浮起 */
     .player-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.6);
@@ -87,8 +86,6 @@
     }
     #modal.hidden { display: none; }
 
-
-    /* RWD：螢幕寬度 ≤ 460px 時 */
     @media (max-width: 460px) {
       h1 {
         font-size: 1.5rem;
