@@ -129,6 +129,13 @@ main {
   h1 {
     font-size: 1.5rem;
   }
+  #video-btn,
+  #close-btn {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
 
   #controls {
     flex-direction: column;
