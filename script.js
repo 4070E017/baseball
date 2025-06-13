@@ -124,8 +124,6 @@ async function loadPlayers() {
             <h2>${p.person.fullName}</h2>
             <p>位置：${p.position.name}</p>
             <p>背號：${p.jerseyNumber || 'N/A'}</p>
-            <p>狀態：${p.status?.code === 'I' ? '傷兵名單' :
-                     p.status?.code === 'N' ? '已離隊' : '現役'}</p>
             ${statsHtml}
             <button id="close-btn">關閉</button>
           `;
