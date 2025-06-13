@@ -59,20 +59,35 @@ async function loadTeams() {
 async function loadPlayers() {
   const season     = seasonSelect.value;
   const teamId     = teamSelect.value;
-  const playerType = typeSelect.value;
+  const playerType = typeSelect.value;  // 'hitter' 或 'pitcher'
   const rosterURL  = `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=activeRoster&season=${season}`;
 
   try {
     const res = await axios.get(rosterURL);
     playerGrid.innerHTML = '';
 
-    res.data.roster.forEach((p, idx) => {
-      const positionName = p.position.type.toLowerCase();
-      const isPitcher    = positionName.includes('pitcher');
-      const isHitter     = !isPitcher;
+    for (const [idx, p] of res.data.roster.entries()) {
+      const posType   = p.position.type.toLowerCase();
+      const isPitcher = posType.includes('pitcher');
+      const isHitter  = !isPitcher;
 
-      if (playerType === 'pitcher' && !(isPitcher || p.person.fullName === 'Shohei Ohtani')) return;
-      if (playerType === 'hitter'  && !(isHitter  || p.person.fullName === 'Shohei Ohtani')) return;
+      if (playerType === 'pitcher' && !(isPitcher || p.person.fullName === 'Shohei Ohtani')) continue;
+      if (playerType === 'hitter'  && !(isHitter  || p.person.fullName === 'Shohei Ohtani')) continue;
+
+      let classification = '';
+      if (isPitcher) {
+        try {
+          const statURL = `https://statsapi.mlb.com/api/v1/people/${p.person.id}/stats?stats=season&season=${season}&group=pitching`;
+          const statRes = await axios.get(statURL);
+          const splits  = statRes.data.stats?.[0]?.splits;
+          const stats   = splits?.length ? splits[0].stat : null;
+          if (stats) {
+            classification = stats.gamesStarted > 0 ? '先發投手' : '後援投手';
+          }
+        } catch {
+          console.warn(`取 ${p.person.fullName} 統計失敗`);
+        }
+      }
 
       const card = document.createElement('div');
       card.className = 'player-card';
@@ -80,63 +95,83 @@ async function loadPlayers() {
 
       const img = new Image();
       img.alt = p.person.fullName;
-      img.onerror = () => {
-        img.src = 'placeholder.png';
+      img.onerror = function() {
+        this.onerror = null;
+        this.src = 'img/placeholder.png';
       };
       img.src = `https://midfield.mlbstatic.com/v1/people/${p.person.id}/headshot/67/current`;
 
-      const nameEl   = document.createElement('h2');
+      const nameEl    = document.createElement('h2');
       nameEl.textContent = p.person.fullName;
-      const posEl    = document.createElement('p');
+      const posEl     = document.createElement('p');
       posEl.textContent = `位置：${p.position.name}`;
-      const jerseyEl = document.createElement('p');
+      const jerseyEl  = document.createElement('p');
       jerseyEl.textContent = `背號：${p.jerseyNumber || 'N/A'}`;
+      const roleEl    = document.createElement('p');
+      if (classification) roleEl.textContent = `角色：${classification}`;
 
-      card.append(img, nameEl, posEl, jerseyEl);
+      card.append(img, nameEl, posEl, jerseyEl, roleEl);
+      playerGrid.appendChild(card);
 
       card.addEventListener('click', async () => {
-        const group   = playerType === 'hitter' ? 'hitting' : 'pitching';
-        const statURL = `https://statsapi.mlb.com/api/v1/people/${p.person.id}/stats?stats=season&season=${season}&group=${group}`;
-        try {
-          const statRes = await axios.get(statURL);
-          const splits = statRes.data.stats?.[0]?.splits;
-          const stats  = splits?.length ? splits[0].stat : null;
-
-          let statsHtml = '';
-          if (stats) {
-            statsHtml += `<h3>${group==='hitting'?'打擊數據':'投球數據'}</h3>`;
-            if (group === 'hitting') {
-              statsHtml += `<p>平均打擊率：${stats.avg  || 'N/A'}</p>`;
+        let statsHtml = '';
+        if (isPitcher) {
+          try {
+            const statURL = `https://statsapi.mlb.com/api/v1/people/${p.person.id}/stats?stats=season&season=${season}&group=pitching`;
+            const statRes = await axios.get(statURL);
+            const splits  = statRes.data.stats?.[0]?.splits;
+            const stats   = splits?.length ? splits[0].stat : null;
+            if (stats) {
+              statsHtml += `<h3>投球數據</h3>`;
+              statsHtml += `<p>ERA：${stats.era || 'N/A'}</p>`;
+              statsHtml += `<p>勝投：${stats.wins ?? 'N/A'}</p>`;
+              statsHtml += `<p>三振：${stats.strikeOuts ?? 'N/A'}</p>`;
+              statsHtml += `<p>救援成功：${stats.saves ?? 'N/A'}</p>`;
+              statsHtml += `<p>先發場次：${stats.gamesStarted ?? 0}</p>`;
+            } else {
+              statsHtml = '<p>查無投球統計</p>';
+            }
+          } catch {
+            statsHtml = '<p>讀取投球統計失敗</p>';
+          }
+        } else {
+          // 打者數據
+          try {
+            const statURL = `https://statsapi.mlb.com/api/v1/people/${p.person.id}/stats?stats=season&season=${season}&group=hitting`;
+            const statRes = await axios.get(statURL);
+            const splits  = statRes.data.stats?.[0]?.splits;
+            const stats   = splits?.length ? splits[0].stat : null;
+            if (stats) {
+              statsHtml += `<h3>打擊數據</h3>`;
+              statsHtml += `<p>平均打擊率：${stats.avg || 'N/A'}</p>`;
               statsHtml += `<p>全壘打：${stats.homeRuns ?? 'N/A'}</p>`;
               statsHtml += `<p>三振：${stats.strikeOuts ?? 'N/A'}</p>`;
               statsHtml += `<p>安打：${stats.hits ?? 'N/A'}</p>`;
             } else {
-              statsHtml += `<p>ERA：${stats.era  || 'N/A'}</p>`;
-              statsHtml += `<p>勝投：${stats.wins ?? 'N/A'}</p>`;
-              statsHtml += `<p>三振：${stats.strikeOuts ?? 'N/A'}</p>`;
-              statsHtml += `<p>救援成功：${stats.saves ?? 'N/A'}</p>`;
+              statsHtml = '<p>查無打擊統計</p>';
             }
-          } else {
-            statsHtml = '<p>查無統計資料</p>';
+          } catch {
+            statsHtml = '<p>讀取打擊統計失敗</p>';
           }
-
-          modalContent.innerHTML = `
-            <h2>${p.person.fullName}</h2>
-            <p>位置：${p.position.name}</p>
-            <p>背號：${p.jerseyNumber || 'N/A'}</p>
-            ${statsHtml}
-            <button id="close-btn">關閉</button>
-          `;
-          modal.classList.remove('hidden');
-          document.getElementById('close-btn')
-                  .addEventListener('click', () => modal.classList.add('hidden'));
-        } catch (e) {
-          console.error('讀取統計資料失敗：', e);
         }
-      });
 
-      playerGrid.appendChild(card);
-    });
+        modalContent.innerHTML = `
+          <h2>${p.person.fullName}</h2>
+          <p>位置：${p.position.name}</p>
+          <p>背號：${p.jerseyNumber || 'N/A'}</p>
+          <p>狀態：${p.status?.code === 'I' ? '傷兵名單'
+                    : p.status?.code === 'N' ? '已離隊'
+                    : '現役'}</p>
+          ${classification ? `<p>角色：${classification}</p>` : ''}
+          ${statsHtml}
+          <button id="close-btn">關閉</button>
+        `;
+        modal.classList.remove('hidden');
+        document.getElementById('close-btn')
+                .addEventListener('click', () => modal.classList.add('hidden'));
+      });
+    }
+
   } catch (err) {
     console.error('載入球員列表失敗：', err);
   }
