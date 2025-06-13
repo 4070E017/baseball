@@ -1,11 +1,10 @@
-const teamSelect          = document.getElementById('team-select');
-const seasonSelect        = document.getElementById('season-select');
-const typeSelect          = document.getElementById('player-type-select');
-const playerGrid          = document.getElementById('player-grid');
-const modal               = document.getElementById('modal');
-const modalContent        = document.getElementById('modal-content');
-const favoritesCheckbox   = document.getElementById('favorites-checkbox');
-
+const teamSelect        = document.getElementById('team-select');
+const seasonSelect      = document.getElementById('season-select');
+const typeSelect        = document.getElementById('player-type-select');
+const playerGrid        = document.getElementById('player-grid');
+const modal             = document.getElementById('modal');
+const modalContent      = document.getElementById('modal-content');
+const favoritesCheckbox = document.getElementById('favorites-checkbox');
 const FAVORITES_KEY = 'favoritePlayers';
 
 function getFavorites() {
@@ -63,7 +62,6 @@ for (let y = 2000; y <= 2025; y++) {
 }
 seasonSelect.value = new Date().getFullYear();
 
-// 載入球隊列表
 async function loadTeams() {
   try {
     const res = await axios.get('https://statsapi.mlb.com/api/v1/teams?sportId=1');
@@ -76,40 +74,39 @@ async function loadTeams() {
   }
 }
 
-// 載入並顯示球員卡片（含最愛 & 先發/後援分類）
 async function loadPlayers() {
-  const season       = seasonSelect.value;
-  const teamId       = teamSelect.value;
-  const playerType   = typeSelect.value;         
-  const showFavOnly  = favoritesCheckbox.checked;
-  const rosterURL    = `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=activeRoster&season=${season}`;
-  const currentFavs  = getFavorites();
+  const season      = seasonSelect.value;
+  const teamId      = teamSelect.value;
+  const playerType  = typeSelect.value;      // 'hitter' 或 'pitcher'
+  const showFavOnly = favoritesCheckbox.checked;
+  const rosterURL   = `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=activeRoster&season=${season}`;
+  const currentFavs = getFavorites();
 
   try {
     const res = await axios.get(rosterURL);
     playerGrid.innerHTML = '';
 
     for (const [idx, p] of res.data.roster.entries()) {
-      const id         = p.person.id;
-      const posType    = p.position.type.toLowerCase();
-      const isPitcher  = posType.includes('pitcher');
-      const isHitter   = !isPitcher;
-      const isFav      = currentFavs.includes(id);
+      const id        = p.person.id;
+      const posType   = p.position.type.toLowerCase();
+      const isPitcher = posType.includes('pitcher');
+      const isHitter  = !isPitcher;
+      const isFav     = currentFavs.includes(id);
 
       if (showFavOnly && !isFav) continue;
-
       if (playerType === 'pitcher' && !(isPitcher || p.person.fullName === 'Shohei Ohtani')) continue;
       if (playerType === 'hitter'  && !(isHitter  || p.person.fullName === 'Shohei Ohtani')) continue;
 
       let classification = '';
       if (isPitcher) {
         try {
-          const statURL = `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${season}&group=pitching`;
-          const statRes = await axios.get(statURL);
-          const splits  = statRes.data.stats?.[0]?.splits;
-          const stats   = splits?.length ? splits[0].stat : null;
+          const statRes = await axios.get(
+            `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${season}&group=pitching`
+          );
+          const splits = statRes.data.stats?.[0]?.splits;
+          const stats  = splits?.length ? splits[0].stat : null;
           if (stats) classification = stats.gamesStarted > 0 ? '先發投手' : '後援投手';
-        } catch {  }
+        } catch {}
       }
 
       const card = document.createElement('div');
@@ -127,18 +124,14 @@ async function loadPlayers() {
         favBtn.textContent = nowFav ? '★' : '☆';
         favBtn.title = nowFav ? '取消最愛' : '加入最愛';
         favBtn.classList.add('pop');
-        favBtn.addEventListener(
-          'animationend',
-          () => favBtn.classList.remove('pop'),
-          { once: true }
-        );
+        favBtn.addEventListener('animationend', () => favBtn.classList.remove('pop'), { once: true });
       });
 
       const img = new Image();
       img.alt = p.person.fullName;
       img.onerror = function() {
         this.onerror = null;
-        this.src = 'placeholder.png';
+        this.src = 'img/placeholder.png';
       };
       img.src = `https://midfield.mlbstatic.com/v1/people/${id}/headshot/67/current`;
 
@@ -158,10 +151,11 @@ async function loadPlayers() {
         let statsHtml = '';
         if (isPitcher) {
           try {
-            const statURL = `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${season}&group=pitching`;
-            const statRes = await axios.get(statURL);
-            const splits  = statRes.data.stats?.[0]?.splits;
-            const stats   = splits?.length ? splits[0].stat : null;
+            const statRes = await axios.get(
+              `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${season}&group=pitching`
+            );
+            const splits = statRes.data.stats?.[0]?.splits;
+            const stats  = splits?.length ? splits[0].stat : null;
             if (stats) {
               statsHtml += `<h3>投球數據</h3>`;
               statsHtml += `<p>ERA：${stats.era || 'N/A'}</p>`;
@@ -175,10 +169,11 @@ async function loadPlayers() {
           }
         } else {
           try {
-            const statURL = `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${season}&group=hitting`;
-            const statRes = await axios.get(statURL);
-            const splits  = statRes.data.stats?.[0]?.splits;
-            const stats   = splits?.length ? splits[0].stat : null;
+            const statRes = await axios.get(
+              `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${season}&group=hitting`
+            );
+            const splits = statRes.data.stats?.[0]?.splits;
+            const stats  = splits?.length ? splits[0].stat : null;
             if (stats) {
               statsHtml += `<h3>打擊數據</h3>`;
               statsHtml += `<p>平均打擊率：${stats.avg || 'N/A'}</p>`;
@@ -200,11 +195,17 @@ async function loadPlayers() {
                     : '現役'}</p>
           ${classification ? `<p>角色：${classification}</p>` : ''}
           ${statsHtml}
+          <button id="video-btn">觀看高光</button>
           <button id="close-btn">關閉</button>
         `;
         modal.classList.remove('hidden');
         document.getElementById('close-btn')
                 .addEventListener('click', () => modal.classList.add('hidden'));
+        document.getElementById('video-btn')
+                .addEventListener('click', () => {
+          const query = encodeURIComponent(p.person.fullName + ' highlights');
+          window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
+        });
       });
     }
   } catch (err) {
