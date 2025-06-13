@@ -1,185 +1,256 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0b0f17, #1a2230);
+  color: #e0e6f3;
+}
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0b0f17, #1a2230);
-      color: #e0e6f3;
-    }
-    header {
-      padding: 1rem;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    }
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-    #controls {
-      margin-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    select, button {
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    main {
-      padding: 1rem;
-    }
-    #player-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .player-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease, opacity 0.4s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(20px);
-      position: relative;
-      animation: fadeInUp 0.6s forwards;
-    }
-    .fav-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      font-size: 1.5rem;
-      color: gold;
-      cursor: pointer;
-      user-select: none;
-    }
-    
-    .player-card:nth-child(even) { animation-delay: 0.1s; }
-    .player-card:nth-child(odd)  { animation-delay: 0.2s; }
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .player-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 0.5rem;
-    }
-    .player-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-    }
-    #modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    #modal-content {
-      background: #1e2a38;
-      padding: 2rem;
-      border-radius: 10px;
-      color: #fff;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-    }
-    #modal.hidden { display: none; }
+header {
+  padding: 1rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
 
-    @media (max-width: 460px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-      #controls {
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 0 1rem;
-      }
-      select, button {
-        width: 100%;
-        font-size: 0.9rem;
-      }
-      #player-grid {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
-      .player-card {
-        padding: 0.75rem;
-      }
-      .player-card img {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 0.4rem;
-      }
-      .player-card h2 {
-        font-size: 1rem;
-        margin: 0.3rem 0;
-      }
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
 
-    }
+#controls {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
 
-      #controls {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        }
+select,
+button {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-      .toggle-wrapper {
-        display: flex;
-        align-items: center;
-        position: relative;
-        user-select: none;
-        }
+main {
+  padding: 1rem;
+}
 
-      .toggle-wrapper input[type="checkbox"] {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        }
+#player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
 
-      .toggle-label {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 26px;
-        background: #ccc;
-        border-radius: 13px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        }
+.player-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, opacity 0.4s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  position: relative;
+  animation: fadeInUp 0.6s forwards;
+}
 
-      .toggle-ball {
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        width: 20px;
-        height: 20px;
-        background: white;
-        border-radius: 50%;
-        transition: transform 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+.player-card:nth-child(even) {
+  animation-delay: 0.1s;
+}
 
-      .toggle-wrapper input:checked + .toggle-label {
-        background: #4caf50;
-        }
-        .toggle-wrapper input:checked + .toggle-label .toggle-ball {
-        transform: translateX(24px);
-        }
+.player-card:nth-child(odd) {
+  animation-delay: 0.2s;
+}
 
-      .toggle-text {
-        margin-left: 0.5rem;
-        font-size: 0.9rem;
-        color: white;
-        }
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.player-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+
+.player-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.5rem;
+  color: gold;
+  cursor: pointer;
+  user-select: none;
+}
+
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#modal.hidden {
+  display: none;
+}
+
+#modal-content {
+  background: #1e2a38;
+  padding: 2rem;
+  border-radius: 10px;
+  color: #fff;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+@media (max-width: 460px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 1rem;
+  }
+
+  select,
+  button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  #player-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .player-card {
+    padding: 0.75rem;
+  }
+
+  .player-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.4rem;
+  }
+
+  .player-card h2 {
+    font-size: 1rem;
+    margin: 0.3rem 0;
+  }
+}
+
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  user-select: none;
+}
+
+.toggle-wrapper input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-label {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle-ball {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-wrapper input:checked + .toggle-label {
+  background: #4caf50;
+}
+
+.toggle-wrapper input:checked + .toggle-label .toggle-ball {
+  transform: translateX(24px);
+}
+
+.toggle-text {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: white;
+}
+
+#video-btn,
+#close-btn {
+  display: inline-block;
+  margin: 0.5rem 0.25rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#video-btn {
+  color: black;
+}
+
+#video-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+#video-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+#close-btn {
+  color: black;
+}
+
+#close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+#close-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
