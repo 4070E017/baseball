@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MLB 球員卡片展示</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>MLB 球員資料牆</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="baseball.png" type="image/png" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body class="dark">
   <header>
@@ -19,6 +18,13 @@
         <option value="pitcher">投手</option>
       </select>
       <button id="load-btn">載入資料</button>
+      <div class="toggle-wrapper">
+        <input type="checkbox" id="favorites-checkbox" />
+        <label for="favorites-checkbox" class="toggle-label">
+          <span class="toggle-ball"></span>
+        </label>
+        <span class="toggle-text">只顯示最愛</span>
+      </div>
     </div>
   </header>
   <main>
@@ -27,8 +33,6 @@
   <div id="modal" class="hidden">
     <div id="modal-content"></div>
   </div>
-  <script src="./script.js">
-
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
