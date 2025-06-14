@@ -137,7 +137,7 @@ async function loadPlayers() {
 
       const img = new Image();
       img.alt    = p.person.fullName;
-      img.onerror = () => { img.onerror = null; img.src = 'img/placeholder.png'; };
+      img.onerror = () => { img.onerror = null; img.src = 'placeholder.png'; };
       img.src    = `https://midfield.mlbstatic.com/v1/people/${id}/headshot/67/current`;
 
       const nameEl   = document.createElement('h2');
