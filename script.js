@@ -8,6 +8,7 @@ const nameMap = {
   'Chicago White Sox':      '芝加哥白襪',
   'Cincinnati Reds':        '辛辛那提紅人',
   'Cleveland Guardians':    '克里夫蘭守護者',
+  'Cleveland Indians':      '克里夫蘭守護者',
   'Colorado Rockies':       '科羅拉多洛磯',
   'Detroit Tigers':         '底特律老虎',
   'Houston Astros':         '休士頓太空人',
