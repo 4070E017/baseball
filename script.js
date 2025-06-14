@@ -1,6 +1,3 @@
-// script.js
-
-// —— 英文隊名 → 中文對照表 ——
 const nameMap = {
   'Athletics':              '奧克蘭運動家',
   'Arizona Diamondbacks':   '亞利桑那響尾蛇',
@@ -35,15 +32,12 @@ const nameMap = {
   'Washington Nationals':   '華盛頓國民'
 };
 
-// —— API URL 生成器 ——
 const STATS_API = ({ season, group, pool, limit }) =>
   `https://statsapi.mlb.com/api/v1/stats?stats=season&season=${season}` +
   `&group=${group}&sportId=1&playerPool=${pool}&limit=${limit}`;
 const ROSTER_API = (teamId, season) =>
   `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=activeRoster&season=${season}`;
 const TEAMS_API  = 'https://statsapi.mlb.com/api/v1/teams?sportId=1';
-
-// —— DOM Elements ——
 const seasonSelect      = document.getElementById('season-select');
 const teamSelect        = document.getElementById('team-select');
 const typeSelect        = document.getElementById('player-type-select');
@@ -53,8 +47,6 @@ const playerGrid        = document.getElementById('player-grid');
 const barChart          = document.getElementById('bar-chart');
 const modal             = document.getElementById('modal');
 const modalContent      = document.getElementById('modal-content');
-
-// —— 最愛功能 ——
 const FAVORITES_KEY = 'favoritePlayers';
 function getFavorites() {
   try {
@@ -71,13 +63,10 @@ function toggleFavorite(id) {
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
 }
 
-// —— 初始化 年份下拉 ——
 for (let y = 2000; y <= 2025; y++) {
   seasonSelect.add(new Option(y, y));
 }
 seasonSelect.value = new Date().getFullYear();
-
-// —— 載入球隊列表 ——
 async function loadTeams() {
   try {
     const res = await axios.get(TEAMS_API);
@@ -93,8 +82,6 @@ async function loadTeams() {
     console.error('載入球隊失敗：', err);
   }
 }
-
-// —— 載入並顯示球員卡片 ——
 async function loadPlayers() {
   playerGrid.style.display = '';
   barChart.style.display   = 'none';
@@ -172,8 +159,6 @@ async function loadPlayers() {
     console.error('載入球員列表失敗：', err);
   }
 }
-
-// —— 卡片點擊打開統計 Modal ——
 async function showModal(p, classification, season) {
   const isPitcher = p.position.type.toLowerCase().includes('pitcher');
   const group     = isPitcher ? 'pitching' : 'hitting';
@@ -225,7 +210,6 @@ async function showModal(p, classification, season) {
   };
 }
 
-// —— 長條圖 Modal ——
 function showBarModal(playerId, fullName, teamEng, value, label) {
   const zhTeam = nameMap[teamEng] || teamEng;
   modalContent.innerHTML = `
@@ -241,7 +225,6 @@ function showBarModal(playerId, fullName, teamEng, value, label) {
   document.getElementById('close-btn').onclick = () => modal.classList.add('hidden');
 }
 
-// —— 排行榜選單變動 ——
 leaderSelect.addEventListener('change', () => {
   if (!leaderSelect.value) {
     playerGrid.style.display = '';
@@ -255,7 +238,6 @@ leaderSelect.addEventListener('change', () => {
   }
 });
 
-// —— 載入並渲染排行榜 ——
 async function loadLeaders(stat, label, group) {
   const season = seasonSelect.value;
   const url    = STATS_API({ season, group, pool: 'all', limit: 5000 });
@@ -285,7 +267,6 @@ async function loadLeaders(stat, label, group) {
   }
 }
 
-// —— 渲染條形圖並綁定點擊 ——
 function renderBars(statsData, label) {
   barChart.innerHTML = '';
   const max = Math.max(...statsData.map(d => d.value), 1);
@@ -326,16 +307,12 @@ function renderBars(statsData, label) {
   });
 }
 
-// —— 點擊空白關閉 Modal ——
 window.addEventListener('click', e => {
   if (e.target === modal) modal.classList.add('hidden');
 });
 
-// —— 綁定篩選事件 ——
 favoritesCheckbox.addEventListener('change', loadPlayers);
 typeSelect.addEventListener('change',      loadPlayers);
 seasonSelect.addEventListener('change',    loadPlayers);
 teamSelect.addEventListener('change',      loadPlayers);
-
-// —— 啟動 ——
 loadTeams();
