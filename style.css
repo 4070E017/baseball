@@ -288,6 +288,6 @@ main {
     grid-template-columns: 35% 1fr;
   }
   .bar-label {
-    font-size: 0.85rem;
+    font-size: 12px;
   }
 }
