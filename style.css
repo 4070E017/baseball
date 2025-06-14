@@ -1,6 +1,3 @@
-/* style.css */
-
-/* 全局設定 */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -8,7 +5,6 @@ body {
   color: #e0e6f3;
 }
 
-/* Header */
 header {
   padding: 1rem;
   text-align: center;
@@ -21,7 +17,6 @@ h1 {
   font-size: 2rem;
 }
 
-/* 控制列 */
 #controls {
   margin-top: 1rem;
   display: flex;
@@ -38,7 +33,6 @@ select, button {
   cursor: pointer;
 }
 
-/* Toggle 開關 */
 .toggle-wrapper {
   display: flex;
   align-items: center;
@@ -82,12 +76,10 @@ select, button {
   color: white;
 }
 
-/* Main */
 main {
   padding: 1rem;
 }
 
-/* 球員卡片 Grid */
 #player-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -95,7 +87,6 @@ main {
   margin-top: 1rem;
 }
 
-/* 球員卡片 */
 .player-card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -119,7 +110,7 @@ main {
   to { opacity: 1; transform: translateY(0); }
 }
 .player-card h2 {
-  min-height: 2.4em; /* 保持兩行文字高度 */
+  min-height: 2.4em; 
   margin: 0.5rem 0;
 }
 .player-card p {
@@ -136,7 +127,6 @@ main {
   box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
 
-/* 收藏按鈕 */
 .fav-btn {
   position: absolute;
   top: 8px;
@@ -147,7 +137,6 @@ main {
   user-select: none;
 }
 
-/* Modal */
 #modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -170,7 +159,6 @@ main {
   display: none;
 }
 
-/* 高光 & 關閉按鈕 */
 #video-btn, #close-btn {
   display: inline-block;
   margin: 0.5rem 0.25rem;
@@ -206,7 +194,6 @@ main {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* ====== 纯 CSS 动画条形图（Grid 版） ====== */
 #bar-chart {
   width: 90%;
   max-width: 800px;
@@ -232,7 +219,7 @@ main {
   border-radius: 4px;
   transition: width 0.8s ease-out;
   position: relative;
-  width: 0; /* JS 会再设置成百分比 */
+  width: 0; 
 }
 .bar-value::after {
   content: attr(data-value);
@@ -254,7 +241,6 @@ main {
   transform: translateY(0);
 }
 
-/* RWD：螢幕寬度 ≤ 460px */
 @media (max-width: 460px) {
   h1 {
     font-size: 1.5rem;
