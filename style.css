@@ -1,3 +1,6 @@
+/* style.css */
+
+/* 全局設定 */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -5,6 +8,7 @@ body {
   color: #e0e6f3;
 }
 
+/* Header */
 header {
   padding: 1rem;
   text-align: center;
@@ -12,23 +16,21 @@ header {
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
-
 h1 {
   margin: 0;
   font-size: 2rem;
 }
 
+/* 控制列 */
 #controls {
   margin-top: 1rem;
   display: flex;
   align-items: center;
+  gap: 0.75rem;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
 }
-
-select,
-button {
+select, button {
   padding: 0.5rem;
   border-radius: 6px;
   border: none;
@@ -36,165 +38,17 @@ button {
   cursor: pointer;
 }
 
-main {
-  padding: 1rem;
-}
-
-#player-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.player-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease, opacity 0.4s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(20px);
-      position: relative;
-      animation: fadeInUp 0.6s forwards;
-}
-.player-card h2 {
-      min-height: 2.4em;
-      margin: 0.5rem 0;
-}
-
-.player-card p {
-      margin: 0.25rem 0;
-}
-
-.player-card:nth-child(even) {
-  animation-delay: 0.1s;
-}
-
-.player-card:nth-child(odd) {
-  animation-delay: 0.2s;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.player-card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-bottom: 0.5rem;
-}
-
-.player-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-}
-
-.fav-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 1.5rem;
-  color: gold;
-  cursor: pointer;
-  user-select: none;
-}
-
-#modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-#modal.hidden {
-  display: none;
-}
-
-#modal-content {
-  background: #1e2a38;
-  padding: 2rem;
-  border-radius: 10px;
-  color: #fff;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-}
-
-@media (max-width: 460px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-  #video-btn,
-  #close-btn {
-    display: block;
-    width: 100%;
-    margin: 0.5rem 0;
-  }
-
-
-  #controls {
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 0 1rem;
-  }
-
-  select,
-  button {
-    width: 100%;
-    font-size: 0.9rem;
-  }
-
-  #player-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .player-card {
-    padding: 0.75rem;
-  }
-
-  .player-card img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 0.4rem;
-  }
-
-  .player-card h2 {
-    font-size: 1rem;
-    margin: 0.3rem 0;
-  }
-}
-
+/* Toggle 開關 */
 .toggle-wrapper {
   display: flex;
   align-items: center;
-  position: relative;
   user-select: none;
 }
-
 .toggle-wrapper input[type="checkbox"] {
   opacity: 0;
   width: 0;
   height: 0;
 }
-
 .toggle-label {
   position: relative;
   display: inline-block;
@@ -205,7 +59,6 @@ main {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
 .toggle-ball {
   position: absolute;
   top: 3px;
@@ -215,25 +68,110 @@ main {
   background: white;
   border-radius: 50%;
   transition: transform 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-
 .toggle-wrapper input:checked + .toggle-label {
   background: #4caf50;
 }
-
 .toggle-wrapper input:checked + .toggle-label .toggle-ball {
   transform: translateX(24px);
 }
-
 .toggle-text {
   margin-left: 0.5rem;
   font-size: 0.9rem;
   color: white;
 }
 
-#video-btn,
-#close-btn {
+/* Main */
+main {
+  padding: 1rem;
+}
+
+/* 球員卡片 Grid */
+#player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* 球員卡片 */
+.player-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, opacity 0.4s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  position: relative;
+  animation: fadeInUp 0.6s forwards;
+}
+.player-card:nth-child(even) { animation-delay: 0.1s; }
+.player-card:nth-child(odd)  { animation-delay: 0.2s; }
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+.player-card h2 {
+  min-height: 2.4em; /* 保持兩行文字高度 */
+  margin: 0.5rem 0;
+}
+.player-card p {
+  margin: 0.25rem 0;
+}
+.player-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+.player-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* 收藏按鈕 */
+.fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.5rem;
+  color: gold;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Modal */
+#modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#modal-content {
+  background: #1e2a38;
+  padding: 2rem;
+  border-radius: 10px;
+  color: #fff;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+#modal.hidden {
+  display: none;
+}
+
+/* 高光 & 關閉按鈕 */
+#video-btn, #close-btn {
   display: inline-block;
   margin: 0.5rem 0.25rem;
   padding: 0.6rem 1.2rem;
@@ -242,34 +180,114 @@ main {
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
-
 #video-btn {
   color: black;
 }
-
 #video-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
 }
-
 #video-btn:active {
   transform: translateY(0);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
-
 #close-btn {
   color: black;
 }
-
 #close-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
 }
-
 #close-btn:active {
   transform: translateY(0);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ====== 纯 CSS 动画条形图（Grid 版） ====== */
+#bar-chart {
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+.bar-item {
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.bar-label {
+  font-size: 0.9rem;
+  color: #e0e6f3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-value {
+  height: 24px;
+  background-color: #4caf50;
+  border-radius: 4px;
+  transition: width 0.8s ease-out;
+  position: relative;
+  width: 0; /* JS 会再设置成百分比 */
+}
+.bar-value::after {
+  content: attr(data-value);
+  position: absolute;
+  top: -1.5rem;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+.bar-value:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RWD：螢幕寬度 ≤ 460px */
+@media (max-width: 460px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  #controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 1rem;
+  }
+  select, button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  #player-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .player-card {
+    padding: 0.75rem;
+  }
+  .player-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.4rem;
+  }
+  .player-card h2 {
+    font-size: 1rem;
+    margin: 0.3rem 0;
+  }
+  .bar-item {
+    grid-template-columns: 35% 1fr;
+  }
+  .bar-label {
+    font-size: 0.85rem;
+  }
 }
