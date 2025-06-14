@@ -17,6 +17,13 @@
         <option value="hitter">打者</option>
         <option value="pitcher">投手</option>
       </select>
+      <select id="leader-select">
+        <option value="">— 請選擇排行 —</option>
+        <option value="homeRuns|全壘打|hitting">全壘打排行</option>
+        <option value="avg|打擊率|hitting">打擊率排行</option>
+        <option value="era|ERA|pitching">ERA排行</option>
+        <option value="wins|勝投|pitching">勝投排行</option>
+      </select>
       <div class="toggle-wrapper">
         <input type="checkbox" id="favorites-checkbox" />
         <label for="favorites-checkbox" class="toggle-label">
@@ -26,12 +33,18 @@
       </div>
     </div>
   </header>
+
   <main>
+    <!-- 球員卡片列表 -->
     <div id="player-grid"></div>
+    <!-- 純 CSS 動畫排行榜 -->
+    <div id="bar-chart" style="display:none;"></div>
   </main>
+
   <div id="modal" class="hidden">
     <div id="modal-content"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
